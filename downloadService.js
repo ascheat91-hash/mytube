@@ -25,6 +25,13 @@ const JOB_TTL_MS = 30 * 60 * 1000;
 let isUpdatingYtDlp = false;
 let updatePromise = null;
 
+function getYtDlpCommonArgs() {
+  return [
+    ...getYtDlpCookieArgs(),
+    '--extractor-args', 'youtube:player_client=android,web'
+  ];
+}
+
 function getYtDlpCookieArgs() {
   const base64 = process.env.YOUTUBE_COOKIES_BASE64;
   const text = process.env.YOUTUBE_COOKIES_TEXT;
@@ -116,8 +123,8 @@ function fetchFileWithRedirects(url, destPath, maxRedirects = 10) {
 function runYtDlp(args) {
   return new Promise((resolve, reject) => {
     const ytdlpPath = getYtDlpPath();
-    const cookieArgs = getYtDlpCookieArgs();
-    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
+    const commonArgs = getYtDlpCommonArgs();
+    const child = spawn(ytdlpPath, [...commonArgs, ...args], { shell: false, windowsHide: true });
 
     let stdout = '';
     let stderr = '';
@@ -496,8 +503,8 @@ async function runDownloadJob(jobId, videoId, formatId, title, options = {}) {
     }
 
     const ytdlpPath = getYtDlpPath();
-    const cookieArgs = getYtDlpCookieArgs();
-    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
+    const commonArgs = getYtDlpCommonArgs();
+    const child = spawn(ytdlpPath, [...commonArgs, ...args], { shell: false, windowsHide: true });
     let childStderr = '';
 
     child.stdout.on('data', (chunk) => {
@@ -704,8 +711,8 @@ async function runPlaylistDownloadJob(jobId, playlistUrlOrId, formatId, playlist
     }
 
     const ytdlpPath = getYtDlpPath();
-    const cookieArgs = getYtDlpCookieArgs();
-    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
+    const commonArgs = getYtDlpCommonArgs();
+    const child = spawn(ytdlpPath, [...commonArgs, ...args], { shell: false, windowsHide: true });
     let childStderr = '';
 
     let currentItem = 1;
@@ -833,6 +840,7 @@ function getJob(jobId) {
 module.exports = {
   getYtDlpPath,
   getYtDlpCookieArgs,
+  getYtDlpCommonArgs,
   getYtDlpVersion,
   updateYtDlp,
   ensureYtDlp,

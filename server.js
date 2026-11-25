@@ -555,9 +555,9 @@ app.get('/api/youtube/yt-dlp/debug', async (_req, res) => {
     const binaryPath = downloadService.getYtDlpPath();
     const version = await downloadService.getYtDlpVersion();
 
-    const cookieArgs = downloadService.getYtDlpCookieArgs();
+    const commonArgs = downloadService.getYtDlpCommonArgs();
     const child = spawn(binaryPath, [
-      ...cookieArgs,
+      ...commonArgs,
       '--dump-single-json',
       '--no-warnings',
       '--no-call-home',
