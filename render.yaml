@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mytube
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/youtube/status
+    envVars:
+      - key: YOUTUBE_REGION
+        value: IN
+      - key: YOUTUBE_API_KEY
+        sync: false

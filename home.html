@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyTube</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Left sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-item active" data-view="home">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Home</span>
+      </a>
+      <a href="#" class="sidebar-item" data-view="home">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 14.65v-5.3L15 12l-5 2.65zm7.77-4.33c-.77-.32-1.2-.5-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.57-5.06s-3.24-2.53-5.07-1.57L12 3.6 9.6 2.77C7.77 1.81 5.5 2.5 4.54 4.34s-.96 3.24.5 4.07l1.43.74c-.77.32-1.2.5-1.2.5L3 9.06C1.16 10.02.47 12.29 1.43 14.12s3.24 2.53 5.07 1.57L12 14.4l2.4.83c1.83.96 4.1.27 5.06-1.57s.27-4.1-1.69-5.11z"/></svg>
+        <span>Shorts</span>
+      </a>
+      <a href="#" class="sidebar-item" data-view="subscriptions">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+        <span>Subscriptions</span>
+      </a>
+      <hr class="sidebar-divider">
+      <a href="#" class="sidebar-item" data-view="library">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        <span>Library</span>
+      </a>
+      <a href="#" class="sidebar-item" data-view="history">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>History</span>
+      </a>
+      <a href="#" class="sidebar-item" data-view="watch-later">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+        <span>Watch later</span>
+      </a>
+      <a href="#" class="sidebar-item" data-view="liked-videos">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg>
+        <span>Liked videos</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Top navbar -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <a href="home.html" class="logo" aria-label="MyTube Home">
+        <svg class="logo-icon" viewBox="0 0 90 20" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="28" height="20" rx="4" fill="#FF0000"/>
+          <polygon points="11,5 11,15 20,10" fill="#FFFFFF"/>
+        </svg>
+        <span class="logo-text">MyTube</span>
+        <sup class="logo-region">IN</sup>
+      </a>
+    </div>
+
+    <div class="navbar-center">
+      <form class="search-form" id="searchForm">
+        <div class="search-box">
+          <input type="text" class="search-input" id="searchInput" placeholder="Search" autocomplete="off">
+          <button type="submit" class="search-btn" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z"/></svg>
+          </button>
+        </div>
+      </form>
+      <button class="icon-btn voice-btn" id="voiceBtn" aria-label="Search with your voice">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+      </button>
+    </div>
+
+    <div class="navbar-right">
+      <button class="playlist-btn" id="playlistModalBtn" title="Download whole playlist">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 10h12v2H4zm0-4h12v2H4zm0 8h8v2H4zm10 0v6l5-3z"/></svg>
+        <span>Playlist</span>
+      </button>
+      <button class="create-btn" id="createBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 13h-3v3h-2v-3H6v-2h3V8h2v3h3v2zm3-9H3v12h14v-6.39l4 1.83V8.56l-4 1.83V4zM3 5h14v1.65l2 1.07L19 6.55V15H3V5z"/></svg>
+        <span>Create</span>
+      </button>
+      <div class="nav-dropdown-wrap">
+        <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20h4c0 1.1-.9 2-2 2s-2-.9-2-2zm9-4.58V11c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v4.42l-2 2v1h16v-1l-2-2zm-2 1H7v-4.42c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5V16.42z"/></svg>
+          <span class="notification-badge" id="notificationBadge" hidden>0</span>
+        </button>
+        <div class="dropdown notification-dropdown" id="notificationDropdown" hidden>
+          <div class="dropdown-header">
+            <h3>Notifications</h3>
+            <button class="text-btn" id="markAllRead">Mark all as read</button>
+          </div>
+          <div class="notification-list" id="notificationList">
+            <p class="notification-empty">Loading notifications...</p>
+          </div>
+        </div>
+      </div>
+      <div class="nav-dropdown-wrap">
+        <button class="avatar-btn" id="profileBtn" aria-label="Account menu">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=MyTubeUser" alt="Profile" class="avatar">
+        </button>
+        <div class="dropdown profile-dropdown" id="profileDropdown" hidden>
+          <div class="profile-header">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=MyTubeUser" alt="Profile" class="avatar avatar-lg">
+            <div>
+              <p class="profile-name">MyTube User</p>
+              <p class="profile-handle">@mytubeuser</p>
+            </div>
+          </div>
+          <hr>
+          <a href="#" class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Your channel
+          </a>
+          <a href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer" class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            YouTube Studio
+          </a>
+          <a href="#" class="dropdown-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            Sign out
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Voice listening indicator -->
+  <div class="voice-indicator" id="voiceIndicator" hidden>
+    <div class="voice-pulse"></div>
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+    <span>Listening...</span>
+  </div>
+
+  <!-- Create modal -->
+  <div class="modal-overlay" id="createModal" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Create</h2>
+        <button class="icon-btn modal-close" id="createModalClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button class="create-option" id="uploadVideoBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+          Upload video
+        </button>
+        <button class="create-option" id="goLiveBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+          Go live
+        </button>
+        <button class="create-option" id="createPostBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          Create post
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playlist downloader modal -->
+  <div class="modal-overlay" id="playlistModal" hidden>
+    <div class="modal playlist-modal">
+      <div class="modal-header">
+        <h2>Download Playlist</h2>
+        <button class="icon-btn modal-close" id="playlistModalClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body playlist-modal-body">
+        <label for="playlistUrlInput" class="form-label">YouTube Playlist Link or ID</label>
+        <div class="playlist-input-wrap">
+          <input type="text" class="playlist-input" id="playlistUrlInput" placeholder="https://www.youtube.com/playlist?list=..." autocomplete="off">
+          <button class="btn playlist-fetch-btn" id="playlistFetchBtn" type="button">Fetch</button>
+        </div>
+
+        <div class="playlist-preview-card" id="playlistPreviewCard" hidden>
+          <h3 id="playlistPreviewTitle">Playlist Title</h3>
+          <p class="playlist-preview-count" id="playlistPreviewCount">0 videos</p>
+        </div>
+
+        <div class="playlist-quality-select" id="playlistQualitySelect">
+          <p class="form-label">Select Download Format</p>
+          <div class="playlist-quality-options">
+            <label class="quality-radio-label active">
+              <input type="radio" name="playlistQuality" value="best" checked>
+              <div class="quality-radio-text">
+                <span class="quality-radio-title">Best Quality MP4 (1080p/4K)</span>
+                <span class="quality-radio-desc">Highest video + audio quality</span>
+              </div>
+            </label>
+            <label class="quality-radio-label">
+              <input type="radio" name="playlistQuality" value="720p">
+              <div class="quality-radio-text">
+                <span class="quality-radio-title">720p HD MP4</span>
+                <span class="quality-radio-desc">Standard HD quality</span>
+              </div>
+            </label>
+            <label class="quality-radio-label">
+              <input type="radio" name="playlistQuality" value="audio-mp3">
+              <div class="quality-radio-text">
+                <span class="quality-radio-title">High Quality MP3 Audio</span>
+                <span class="quality-radio-desc">Audio tracks ZIP bundle</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button class="playlist-start-btn" id="playlistStartDownloadBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Download Playlist as ZIP
+        </button>
+        <p class="error-message" id="playlistError" hidden></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video player -->
+  <div class="player-overlay" id="playerModal" hidden>
+    <div class="player-wrapper">
+      <button class="icon-btn player-close" id="playerClose" aria-label="Close player">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <div class="player-frame-wrap">
+        <iframe id="ytPlayer" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="player-info">
+        <div class="player-info-top">
+          <div class="player-info-text">
+            <span class="live-badge player-live-badge" id="playerLiveBadge" hidden>LIVE</span>
+            <h2 id="playerTitle"></h2>
+            <p id="playerMeta"></p>
+          </div>
+          <div class="player-actions">
+            <a class="watch-yt-btn" id="playerWatchYtBtn" href="#" target="_blank" rel="noopener noreferrer" title="Watch directly on YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              <span>Watch on YouTube</span>
+            </a>
+            <button class="save-btn" id="playerSaveBtn" type="button" title="Save video to playlist">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z"/></svg>
+              <span>Save</span>
+            </button>
+            <button class="download-btn" id="downloadToggleBtn" type="button" hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              <span>Download</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Player Audio & Subtitle Language Controls -->
+        <div class="player-lang-bar" id="playerLangBar">
+          <div class="lang-selector-group">
+            <label for="playerAudioLangSelect" class="lang-label">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              Audio:
+            </label>
+            <select id="playerAudioLangSelect" class="lang-select">
+              <option value="default">Default Track</option>
+              <option value="en">English (en)</option>
+              <option value="hi">Hindi (hi)</option>
+            </select>
+          </div>
+
+          <div class="lang-selector-group">
+            <label for="playerSubLangSelect" class="lang-label">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z"/></svg>
+              Subtitles:
+            </label>
+            <select id="playerSubLangSelect" class="lang-select">
+              <option value="none">Off</option>
+              <option value="en">English (en)</option>
+              <option value="hi">Hindi (hi)</option>
+              <option value="hi-Latn">Hinglish (hi-Latn / En-Sub)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="download-panel" id="downloadPanel" hidden>
+          <div class="download-panel-header">
+            <h3>Select format &amp; quality</h3>
+            <p class="download-panel-subtitle">Multi-Language Audio &amp; Subtitle Options</p>
+          </div>
+
+          <div class="download-lang-options">
+            <div class="download-lang-field">
+              <label for="dlAudioLangSelect" class="form-label">Audio Track Language</label>
+              <select id="dlAudioLangSelect" class="lang-select-full">
+                <option value="default">Default Audio Track</option>
+                <option value="en">English (en)</option>
+                <option value="hi">Hindi (hi)</option>
+              </select>
+            </div>
+
+            <div class="download-lang-field">
+              <label for="dlSubLangSelect" class="form-label">Subtitle / Caption Track</label>
+              <select id="dlSubLangSelect" class="lang-select-full">
+                <option value="none">No Subtitles</option>
+                <option value="en">English Captions (en)</option>
+                <option value="hi">Hindi Captions (hi)</option>
+                <option value="hi-Latn">Hinglish / Latin Captions (hi-Latn)</option>
+              </select>
+            </div>
+
+            <div class="download-embed-check">
+              <label class="embed-check-label">
+                <input type="checkbox" id="dlEmbedSubCheck" checked>
+                <span>Embed Subtitles directly into MP4 container</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="download-formats" id="downloadFormats">
+            <div class="download-formats-loading">
+              <div class="spinner"></div>
+              <span>Loading available qualities...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save to playlist modal -->
+  <div class="modal-overlay" id="savePlaylistModal" hidden>
+    <div class="modal save-playlist-modal">
+      <div class="modal-header">
+        <h2>Save video to...</h2>
+        <button class="icon-btn modal-close" id="savePlaylistModalClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body save-playlist-modal-body">
+        <div class="playlist-checklist" id="playlistChecklist"></div>
+        <hr class="sidebar-divider">
+        <form class="create-playlist-form" id="createPlaylistForm">
+          <input type="text" class="playlist-input" id="newPlaylistTitleInput" placeholder="Name new playlist..." required autocomplete="off">
+          <button type="submit" class="btn playlist-fetch-btn">+ Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download progress -->
+  <div class="download-progress-overlay" id="downloadProgressModal" hidden>
+    <div class="download-progress-card">
+      <div class="download-progress-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      </div>
+      <h3 id="downloadProgressTitle">Preparing download</h3>
+      <p class="download-progress-subtitle" id="downloadProgressSubtitle">Please wait...</p>
+      <div class="download-progress-bar-wrap">
+        <div class="download-progress-bar" id="downloadProgressBar"></div>
+      </div>
+      <p class="download-progress-percent" id="downloadProgressPercent">0%</p>
+      <div class="download-progress-actions">
+        <button class="update-ytdlp-btn" id="updateYtDlpBtn" type="button">Update yt-dlp</button>
+        <button class="text-btn download-cancel-btn" id="downloadCancelBtn" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel details modal -->
+  <div class="channel-overlay" id="channelModal" hidden>
+    <div class="channel-wrapper">
+      <button class="icon-btn channel-close" id="channelModalClose" aria-label="Close channel view">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+
+      <div class="channel-header-card">
+        <div class="channel-banner-wrap" id="channelBannerWrap">
+          <div class="channel-banner-placeholder"></div>
+        </div>
+        <div class="channel-info-bar">
+          <img src="" alt="" class="channel-info-avatar" id="channelAvatar">
+          <div class="channel-info-text">
+            <h1 class="channel-info-title" id="channelTitle">Channel Title</h1>
+            <p class="channel-info-meta" id="channelMeta">@handle • 0 subscribers • 0 videos</p>
+            <p class="channel-info-desc" id="channelDesc"></p>
+          </div>
+          <button class="subscribe-btn" id="channelSubscribeBtn">Subscribe</button>
+        </div>
+      </div>
+
+      <div class="channel-tabs">
+        <button class="channel-tab active">Videos</button>
+      </div>
+
+      <div class="channel-videos-section">
+        <div class="video-grid" id="channelVideoGrid"></div>
+        <div class="load-more" id="channelLoadSpinner" hidden>
+          <div class="spinner"></div>
+        </div>
+        <p class="error-message" id="channelError" hidden></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="main-content" id="mainContent">
+    <div class="api-banner" id="apiBanner" hidden>
+      YouTube API key missing. Copy <code>.env.example</code> to <code>.env</code>, add your key, then restart the server.
+    </div>
+
+    <!-- Category filter chips bar -->
+    <div class="categories-bar" id="categoriesBar">
+      <button class="chip active" data-category="All">All</button>
+      <button class="chip" data-category="Music">Music</button>
+      <button class="chip" data-category="Gaming">Gaming</button>
+      <button class="chip" data-category="Live">Live</button>
+      <button class="chip" data-category="Coding">Coding</button>
+      <button class="chip" data-category="News">News</button>
+      <button class="chip" data-category="Sports">Sports</button>
+      <button class="chip" data-category="Podcasts">Podcasts</button>
+      <button class="chip" data-category="Technology">Technology</button>
+      <button class="chip" data-category="Entertainment">Entertainment</button>
+    </div>
+
+    <div class="content-header">
+      <h1 id="contentTitle">Recommended</h1>
+      <p class="search-results-info" id="searchResultsInfo" hidden></p>
+    </div>
+    <div class="video-grid" id="videoGrid"></div>
+    <div class="load-more" id="loadMore">
+      <div class="spinner" id="loadSpinner" hidden></div>
+      <p id="loadStatus" hidden>Loading more videos...</p>
+    </div>
+    <div class="scroll-sentinel" id="scrollSentinel"></div>
+    <p class="no-results" id="noResults" hidden>No videos found. Try a different search.</p>
+    <p class="error-message" id="errorMessage" hidden></p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
