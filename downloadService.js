@@ -32,6 +32,22 @@ function getYtDlpCommonArgs() {
   ];
 }
 
+function formatYtDlpError(error) {
+  const message = error && error.message ? error.message : String(error);
+  if (!/sign in to confirm|not a bot/i.test(message)) return message;
+
+  const cookiesConfigured = Boolean(
+    process.env.YOUTUBE_COOKIES_BASE64 ||
+    process.env.YOUTUBE_COOKIES_TEXT ||
+    process.env.YOUTUBE_COOKIES_FILE
+  );
+  const guidance = cookiesConfigured
+    ? 'Refresh the signed-in YouTube cookies configured on the Render service.'
+    : 'No YouTube cookies are configured. Export signed-in YouTube cookies in Netscape format, base64-encode the file, and set YOUTUBE_COOKIES_BASE64 in Render Dashboard > mytube > Environment.';
+
+  return `YouTube requires signed-in cookies for this request. ${guidance} Then redeploy or restart the service. Never share cookies in chat or commit them to GitHub.`;
+}
+
 function getYtDlpCookieArgs() {
   const base64 = process.env.YOUTUBE_COOKIES_BASE64;
   const text = process.env.YOUTUBE_COOKIES_TEXT;
@@ -140,7 +156,7 @@ function runYtDlp(args) {
         const lines = stderr.split('\n').map((s) => s.trim());
         const errorLines = lines.filter((s) => s.startsWith('ERROR:') || s.toLowerCase().includes('error'));
         const cleanErr = errorLines.pop() || lines.filter(Boolean).pop() || `yt-dlp exited with code ${code}`;
-        reject(new Error(cleanErr));
+        reject(new Error(formatYtDlpError(new Error(cleanErr))));
       }
     });
   });
@@ -580,7 +596,7 @@ async function runDownloadJob(jobId, videoId, formatId, title, options = {}) {
 
     job.status = 'error';
     job.progress = 0;
-    job.message = error.message || 'Download failed';
+    job.message = formatYtDlpError(error) || 'Download failed';
     scheduleJobCleanup(jobId);
   }
 }
@@ -792,7 +808,7 @@ async function runPlaylistDownloadJob(jobId, playlistUrlOrId, formatId, playlist
 
     job.status = 'error';
     job.progress = 0;
-    job.message = error.message || 'Playlist download failed';
+    job.message = formatYtDlpError(error) || 'Playlist download failed';
     scheduleJobCleanup(jobId);
   }
 }
@@ -841,6 +857,7 @@ module.exports = {
   getYtDlpPath,
   getYtDlpCookieArgs,
   getYtDlpCommonArgs,
+  formatYtDlpError,
   getYtDlpVersion,
   updateYtDlp,
   ensureYtDlp,
@@ -851,4 +868,3 @@ module.exports = {
   getJob,
   cleanupJob
 };
-
