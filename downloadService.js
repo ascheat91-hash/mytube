@@ -25,6 +25,29 @@ const JOB_TTL_MS = 30 * 60 * 1000;
 let isUpdatingYtDlp = false;
 let updatePromise = null;
 
+function getYtDlpCookieArgs() {
+  const base64 = process.env.YOUTUBE_COOKIES_BASE64;
+  const text = process.env.YOUTUBE_COOKIES_TEXT;
+  const configuredFile = process.env.YOUTUBE_COOKIES_FILE;
+
+  let cookieFile = configuredFile;
+  if (!cookieFile && (base64 || text)) {
+    cookieFile = path.join(os.tmpdir(), 'mytube-youtube-cookies.txt');
+    try {
+      const cookieText = base64
+        ? Buffer.from(base64, 'base64').toString('utf8')
+        : text;
+      fs.writeFileSync(cookieFile, cookieText, { encoding: 'utf8', mode: 0o600 });
+    } catch (err) {
+      console.warn('[downloadService] Could not prepare YouTube cookies:', err.message);
+      return [];
+    }
+  }
+
+  if (!cookieFile || !fs.existsSync(cookieFile)) return [];
+  return ['--cookies', cookieFile];
+}
+
 function sanitizeFilename(name) {
   return (name || 'video')
     .replace(/[<>:"/\\|?*]/g, '')
@@ -93,7 +116,8 @@ function fetchFileWithRedirects(url, destPath, maxRedirects = 10) {
 function runYtDlp(args) {
   return new Promise((resolve, reject) => {
     const ytdlpPath = getYtDlpPath();
-    const child = spawn(ytdlpPath, args, { shell: false, windowsHide: true });
+    const cookieArgs = getYtDlpCookieArgs();
+    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
 
     let stdout = '';
     let stderr = '';
@@ -472,7 +496,8 @@ async function runDownloadJob(jobId, videoId, formatId, title, options = {}) {
     }
 
     const ytdlpPath = getYtDlpPath();
-    const child = spawn(ytdlpPath, args, { shell: false, windowsHide: true });
+    const cookieArgs = getYtDlpCookieArgs();
+    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
     let childStderr = '';
 
     child.stdout.on('data', (chunk) => {
@@ -679,7 +704,8 @@ async function runPlaylistDownloadJob(jobId, playlistUrlOrId, formatId, playlist
     }
 
     const ytdlpPath = getYtDlpPath();
-    const child = spawn(ytdlpPath, args, { shell: false, windowsHide: true });
+    const cookieArgs = getYtDlpCookieArgs();
+    const child = spawn(ytdlpPath, [...cookieArgs, ...args], { shell: false, windowsHide: true });
     let childStderr = '';
 
     let currentItem = 1;
@@ -806,6 +832,7 @@ function getJob(jobId) {
 
 module.exports = {
   getYtDlpPath,
+  getYtDlpCookieArgs,
   getYtDlpVersion,
   updateYtDlp,
   ensureYtDlp,

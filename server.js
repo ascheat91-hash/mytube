@@ -211,7 +211,10 @@ async function fetchHomeLiveVideos() {
 }
 
 app.get('/api/youtube/status', (_req, res) => {
-  res.json({ configured: Boolean(YOUTUBE_API_KEY) });
+  res.json({
+    configured: Boolean(YOUTUBE_API_KEY),
+    cookiesConfigured: Boolean(process.env.YOUTUBE_COOKIES_BASE64 || process.env.YOUTUBE_COOKIES_TEXT || process.env.YOUTUBE_COOKIES_FILE)
+  });
 });
 
 app.get('/api/youtube/feed', async (req, res) => {
@@ -552,7 +555,9 @@ app.get('/api/youtube/yt-dlp/debug', async (_req, res) => {
     const binaryPath = downloadService.getYtDlpPath();
     const version = await downloadService.getYtDlpVersion();
 
+    const cookieArgs = downloadService.getYtDlpCookieArgs();
     const child = spawn(binaryPath, [
+      ...cookieArgs,
       '--dump-single-json',
       '--no-warnings',
       '--no-call-home',
